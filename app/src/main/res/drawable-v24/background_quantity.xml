@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item >
+        <shape android:shape="rectangle">
+            <solid android:color="#23ABE8"/>
+
+            <stroke android:width="@dimen/chat_stroke"
+                android:color="#110E0C0C"/>
+        </shape>
+    </item>
+</selector>

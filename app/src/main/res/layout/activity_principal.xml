@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.principal.Principal">
+
+    <TextView
+        android:id="@+id/tvBienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido al Principal"
+        android:textSize="34sp"
+        android:fontFamily="@font/zenkurenaidoregular">
+    </TextView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ir a Productos"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ir a Servicios"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUrlApp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Escribe URL de tu App"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUrlApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGeneraQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Generar Qr"/>
+
+    <ImageView
+        android:id="@+id/ivQRCode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_history"/>
+</LinearLayout>
