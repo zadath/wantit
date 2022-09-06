@@ -6,6 +6,7 @@ data class ProductModel(
     @get:Exclude var id_Product: String? = null,
     var productName: String? = null,
     var model: String? = null,
+    var category: String? = null,
     var productCode: String? = null,
     var description: String? = null,
     var quantity: Int? = 0,

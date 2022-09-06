@@ -2,6 +2,7 @@ package com.lions.wantit.ui.product
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,6 +14,9 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,14 +36,17 @@ import com.lions.wantit.data.network.products.MainAux
 import com.lions.wantit.databinding.FragmentDialogAddBinding
 import java.io.ByteArrayOutputStream
 
-class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
+class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener, AdapterView.OnItemClickListener {
 
     private var binding: FragmentDialogAddBinding? = null
     private var positiveButton: Button? = null
     private var negativeButton: Button? = null
 
+    //private lateinit var contexto: Context
     private var product: ProductModel? = null
     private var photoSelectedUri: Uri? = null
+    private var categoria: String? = null
+    private var flag: Boolean = false
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -60,6 +67,7 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
         activity?.let { activity ->
             binding = FragmentDialogAddBinding.inflate(LayoutInflater.from(context))
 
@@ -70,7 +78,6 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
                     .setNegativeButton("Cancelar", null)
                     .setView(it.root)
                    //.setIcon(R.drawable.ic_access_time)
-
 
                 val dialog = builder.create()
                 dialog.setOnShowListener(this)
@@ -83,6 +90,7 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
     override fun onShow(dialogInterface: DialogInterface?) {
         initProduct()
         configButtons()
+        initCategory()   // 20mayo
 
         val dialog = dialog as? AlertDialog
         dialog?.let {
@@ -93,54 +101,88 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
 
             positiveButton?.setOnClickListener {
                 binding?.let {
-                    enableUI(false)
+                    //enableUI(false)
 
-                    // validacion de campos
-                    /* if(it.etProducName.text.toString().isBlank()){
-                            Log.i("ValidarCampos", "CampoProducto Vacio!")
-                            it.etProducName.error = "Campo requerido"
-                        }*/
+                    validarCampos()
+                    if (flag) {  // si pasan todas las validaciones entonces ejecutará lo siguiente:
+                        enableUI(false)
+                        //uploadImage(product?.id_Product) { eventPost -> //este sube imagen sin reducirlas
+                        uploadReduceImage(product?.id_Product, product?.productImage) { eventPost ->  //este sube imagen reduciendo calidad
+                            if (eventPost.isSuccess) {
+                                if (product == null) {
 
+                                    val product = ProductModel(
+                                            productName = it.etProducName.text.toString().trim(),
+                                            model = it.etModel.text.toString().trim(),
+                                            productCode = it.etProductCode.text.toString().trim(),
+                                            description = it.etDescription.text.toString().trim(),
+                                            quantity = it.etQuantity.text.toString().toInt(),
+                                            priceBase = it.etPriceBase.text.toString().toDouble(),
+                                            productImage = eventPost.photoUrl,
+                                            category = categoria
+                                    )
+                                    save(product, eventPost.documentId!!)
+                                } else {
+                                    product?.apply {
+                                        productName = it.etProducName.text.toString().trim()
+                                        model = it.etModel.text.toString().trim()
+                                        productCode = it.etProductCode.text.toString().trim()
+                                        description = it.etDescription.text.toString().trim()
+                                        quantity = it.etQuantity.text.toString().toInt()
+                                        priceBase = it.etPriceBase.text.toString().toDouble()
+                                        productImage = eventPost.photoUrl
+                                        category = categoria  //20mayo
 
-                    //uploadImage(product?.id_Product) { eventPost -> //este sube imagen sin reducirlas
-                    uploadReduceImage(product?.id_Product, product?.productImage) { eventPost ->  //este sube imagen reduciendo calidad
-                        if (eventPost.isSuccess) {
-                            if (product == null) {
-                                val product = ProductModel(
-                                    productName = it.etProducName.text.toString().trim(),
-                                    model = it.etModel.text.toString().trim(),
-                                    productCode = it.etProductCode.text.toString().trim(),
-                                    description = it.etDescription.text.toString().trim(),
-                                    quantity = it.etQuantity.text.toString().toInt(),
-                                    priceBase = it.etPriceBase.text.toString().toDouble(),
-                                    productImage = eventPost.photoUrl
-                                )
-                                save(product, eventPost.documentId!!)
-                            } else {
-                                product?.apply {
-                                    productName = it.etProducName.text.toString().trim()
-                                    model = it.etModel.text.toString().trim()
-                                    productCode = it.etProductCode.text.toString().trim()
-                                    description = it.etDescription.text.toString().trim()
-                                    quantity = it.etQuantity.text.toString().toInt()
-                                    priceBase = it.etPriceBase.text.toString().toDouble()
-                                    productImage = eventPost.photoUrl
-
-                                    update(this)
+                                        update(this)
+                                    }
                                 }
                             }
                         }
+                    } else {
+                        Toast.makeText(activity, "Llenar campos indicados", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
-
             negativeButton?.setOnClickListener {
                 dismiss()
             }
         }
-
     }
+
+    private fun validarCampos(): Boolean {
+        flag = false
+        var flagCounter = 0
+
+        binding?.let {
+            if (it.etProducName.text.toString().isEmpty()) {
+                it.etProducName.error = "Campo requerido"
+                flagCounter += 1
+            }
+
+            /*if (it.autoCompleteTextView.text.toString().isEmpty()) {
+                it.autoCompleteTextView.error = "Elige categoría"
+                flagCounter += 1
+            }*/
+
+            if (it.etPriceBase.text.toString().isEmpty()) {
+                it.etPriceBase.error = "Captura precio"
+                flagCounter += 1
+            }
+
+            if (it.etQuantity.text.toString().isEmpty()) {
+                it.etQuantity.error = "Ingresa Cantidad"
+                flagCounter += 1
+            }
+
+        }
+        if (flagCounter == 0){
+            flag = true
+            Log.i("Validaciones Campos", "Contador final igual a: " + flagCounter)
+        }
+        return flag
+    }
+
+
 
 
     private fun initProduct() {
@@ -154,6 +196,8 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
                 it.etDescription.setText(product.description)
                 it.etQuantity.setText(product.quantity.toString())
                 it.etPriceBase.setText(product.priceBase.toString())
+                it.autoCompleteTextView.setText(product.category.toString())  // prueba para cargar datos
+
 
                 Glide.with(this)
                     .load(product.productImage)
@@ -162,8 +206,30 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
                     .centerCrop()
                     .fitCenter()
                     .into(it.imgProductPreview)
+
             }
         }
+
+    }
+
+    private fun initCategory(){
+        // 20mayo2022
+        //contexto = context?.applicationContext ?: contexto
+        val listaItems = listOf("Producto", "Servicio")
+        //val categorias = resources.getStringArray(R.array.categorias)
+        //val adaptador = ArrayAdapter(contexto, R.layout.list_item, categorias)
+        val adaptador = ArrayAdapter(requireContext(), R.layout.list_item, listaItems)
+        with(binding!!.autoCompleteTextView){
+            setAdapter(adaptador)
+            onItemClickListener = this@AddDialogFragment
+        } // 20mayo2022
+
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        //val item = parent?.getItemAtPosition(position).toString()
+        categoria = parent?.getItemAtPosition(position).toString()
+        //Toast.makeText(contexto, item, Toast.LENGTH_LONG).show()
     }
 
     private fun configButtons() {
@@ -327,7 +393,7 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
                 }
 
             //return bitmap  la omitimos para implementar la función de reducción de imagen:
-            return getResizedImage(bitmap, 320)
+            return getResizedImage(bitmap, 520)
         }
         return null
     }
@@ -415,4 +481,6 @@ class AddDialogFragment : DialogFragment(), DialogInterface.OnShowListener {
         super.onDestroyView()
         binding = null
     }
+
+
 }

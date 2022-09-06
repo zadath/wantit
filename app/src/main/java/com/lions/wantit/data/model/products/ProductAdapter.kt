@@ -29,6 +29,7 @@ class ProductAdapter(
         holder.setListener(product)
         holder.binding.tvNameProduct.text = product.productName
         holder.binding.tvDescription.text = product.description
+        holder.binding.tvCategoria.text = product.category
         holder.binding.tvPriceSale.text = product.priceBase.toString()
         holder.binding.tvQuantity.text = product.quantity.toString()
 

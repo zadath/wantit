@@ -46,37 +46,6 @@ class Principal : AppCompatActivity() {
             finish()
         }
 
-        /*binding.buttonService.setOnClickListener() {
-            val intent = Intent(this, Service::class.java)
-            startActivity(intent)
-            finish()
-        }*/
-
-        binding.btnGeneraQR.setOnClickListener {
-
-            val temporal = binding.etUrlApp.text.toString()
-            println("datos capturados para convertir a QR = " + temporal)
-            //val barcodeEncoder: BarcodeEncoder
-            //val bitmap: Bitmap
-            //bitmap = barcodeEncoder.encodeBitmap(binding.etUrlApp.text.toString(), BarcodeFormat.QR_CODE, 750, 750)
-            // binding.ivQRCode.setImageBitmap(bitmap)
-
-            //bitmap = barcodeEncoder.encodeBitmap(temporal, BarcodeFormat.QR_CODE, 750, 750)
-            //    binding.ivQRCode.setImageBitmap(bitmap)
-
-            val writer = QRCodeWriter()
-            val bitMatrix = writer.encode(temporal, BarcodeFormat.QR_CODE, 512, 512)
-            val width = bitMatrix.width
-            val height = bitMatrix.height
-            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-            for (x in 0 until width) {
-                for (y in 0 until height) {
-                    bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-                }
-            }
-            binding.ivQRCode.setImageBitmap(bitmap)
-
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

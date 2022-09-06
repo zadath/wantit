@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="165dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
@@ -19,53 +19,59 @@
         android:orientation="horizontal">
 
         <ImageView
-                android:id="@+id/img_auto"
-                android:layout_width="140dp"
-                android:layout_height="190dp"
-                android:layout_marginLeft="8dp"
-                android:layout_gravity="center"/>
+            android:id="@+id/img_auto"
+            android:layout_width="140dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="8dp">
+            android:paddingLeft="@dimen/common_padding_min"
+            android:layout_marginTop="2dp">
 
 
             <TextView
                 android:id="@+id/tvNameProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:lines="1"
                 android:ellipsize="end"
                 tools:text="Combo 1 Play  ilimitado"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:fontFamily="@font/oswaldregular"
-                android:layout_weight="1"/>
+                />
 
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="3"
+                android:lines="2"
                 android:ellipsize="end"
                 tools:text="Descripción del Combo"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:fontFamily="@font/zenkurenaidoregular"
-                android:layout_weight="1"/>
+                />
 
             <TextView
+                android:id="@+id/tvCategoria"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Categoria"
+                android:textSize="15sp"
+
+                android:fontFamily="@font/zenkurenaidoregular"/>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvPriceSale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/detail_total_price"
-                android:textSize="15sp"
+                android:text="@string/product_full_cart"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_weight="1"
                 android:fontFamily="@font/zenkurenaidoregular"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -74,9 +80,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/detail_quantity"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_weight="1"
                 android:fontFamily="@font/zenkurenaidoregular"/>
         </LinearLayout>
     </LinearLayout>

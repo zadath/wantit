@@ -26,13 +26,33 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCategoria"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/tilProductName">
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:inputType="none"
+            android:hint="Categoría"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/tilModel"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:hint="Modelo del Producto"
         android:layout_marginTop="8dp"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/guideline"
     app:layout_constraintTop_toBottomOf="@+id/tilProductName"
     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
@@ -76,7 +96,7 @@
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textNoSuggestions |textMultiLine"/>
+        android:inputType="textMultiLine"/>
 </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -126,7 +146,7 @@
         android:id="@+id/imgProductPreview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/pink_a100_light"
+        android:background="@color/white"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -174,6 +194,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:text="Leer código"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"

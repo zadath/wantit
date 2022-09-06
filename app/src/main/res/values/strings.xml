@@ -2,8 +2,8 @@
     <string name="app_name">wantit</string>
     <string name="button_new">Nuevo</string>
 
-    <string name="detail_quantity">Disponibles: %1$d</string>
-    <string name="detail_total_price"><b>&lt;big>Precio: $%1$.2f MN&lt;/big></b></string>
+    <string name="detail_quantity">Disponibles: </string>
+    <string name="detail_total_price"><b>&lt;big>Total: $%1$.2f MN&lt;/big></b>&lt;br/>(%2$d x $%3$.2f)</string>
 
     <string name="product_full_cart">Total: $%1$.2f MN</string>
 
@@ -32,4 +32,12 @@
     <string name="dialog_cancel">Cancelar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category">Categoria</string>
+    <string name="searchingitems">searchingItems</string>
+
+    <!-- Dropdown items-->
+    <string-array name="categorias">
+        <item>Producto</item>
+        <item>Servicio</item>
+    </string-array>
 </resources>
